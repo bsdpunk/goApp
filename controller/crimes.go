@@ -29,5 +29,10 @@ func LoadDetroit() {
 	fmt.Println(reflect.TypeOf(DB))
 	//	fmt.Println(*detroit{})
 	DB.AutoMigrate(&detroit)
-	DB.CreateInBatches(detroits, 1000)
+	DB.CreateInBatches(detroits, 100)
+}
+
+func GetDB() *gorm.DB {
+	return DB
+
 }

@@ -15,7 +15,11 @@ import (
 type Detroits struct {
 	DetroitNodes []Detroit `json:"detroit_nodes"`
 }
-
+type Pagination struct {
+	Limit int    `json:"limit"`
+	Page  int    `json:"page"`
+	Sort  string `json:"sort"`
+}
 type Detroit struct {
 	Rownum                string `json:"ROWNUM"`
 	Caseid                string `json:"CASEID"`

@@ -2,13 +2,18 @@ package main
 
 import (
 	"net/http"
+	"strconv"
 
 	c "github.com/bsdpunk/goApp/controller"
+	m "github.com/bsdpunk/goApp/models"
+	c "github.com/bsdpunk/goApp/page"
 	"github.com/gin-gonic/gin"
 	"github.com/thinkerou/favicon"
 )
 
 var router *gin.Engine
+
+var db = c.GetDB()
 
 func main() {
 
@@ -62,7 +67,20 @@ func main() {
 		)
 
 	})
+	router.GET("/page", func(c *gin.Context) {
+		page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
+		limit, _ := strconv.Atoi(c.DefaultQuery("limit", "3"))
+		var detroits m.Detroits
 
+		paginator := page.Paging(&page.Param{
+			DB:      db,
+			Page:    page,
+			Limit:   limit,
+			OrderBy: []string{"rownum"},
+			ShowSQL: true,
+		}, &detroits)
+		c.JSON(200, paginator)
+	})
 	//	m := autocert.Manager{
 	//		Prompt:     autocert.AcceptTOS,
 	//		HostPolicy: autocert.HostWhitelist("localhost"),
