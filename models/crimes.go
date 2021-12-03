@@ -10,7 +10,23 @@ import (
 
 	//	"io/ioutil"
 	"bufio"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
+
+var DB *gorm.DB
+
+func con() *gorm.DB {
+	dsn := "host=192.168.1.94 user=dusty password=Qapla1999 dbname=dusty port=5432 sslmode=disable"
+	db, _ := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	return db
+}
+
+func init() {
+	fmt.Println("vim-go")
+	DB = con()
+}
 
 type Detroits struct {
 	DetroitNodes []Detroit `json:"detroit_nodes"`
@@ -21,12 +37,13 @@ type Pagination struct {
 	Sort  string `json:"sort"`
 }
 type Detroit struct {
-	Rownum                string `json:"ROWNUM"`
+	ID                    string `json:"id"  gorm:"primaryKey;autoIncrement:true" gorm:"foreignKey:ID"`
+	Rownum                string `json:"rownum"`
 	Caseid                string `json:"CASEID"`
 	Crimeid               string `json:"CRIMEID"`
 	Crno                  string `json:"CRNO"`
 	Category              string `json:"CATEGORY"`
-	Offensedescription    string `json:"OFFENSEDESCRIPTION"`
+	Offensedescription    string `json:"OFFENSEDESCRIPTION" gorm:"foreignKey:Name`
 	Stateoffensefileclass string `json:"STATEOFFENSEFILECLASS"`
 	Incidentdate          string `json:"INCIDENTDATE"`
 	Hour                  string `json:"HOUR"`
@@ -36,6 +53,11 @@ type Detroit struct {
 	Neighborhood          string `json:"NEIGHBORHOOD"`
 	Censustract           string `json:"CENSUSTRACT"`
 	Location              string `json:"LOCATION"`
+}
+
+type Offense struct {
+	ID   int
+	Name string `gorm:"references:Offensedescription"`
 }
 
 func init() {
@@ -118,4 +140,11 @@ func GetDetroit() (Detroit, []*Detroit) {
 	//fmt.Println(data)
 	//fmt.Println(j)
 	return Detroit{}, data
+}
+
+func CreateDetroit(detroit *Detroit) (err error) {
+	if err = DB.Create(detroit).Error; err != nil {
+		return err
+	}
+	return nil
 }

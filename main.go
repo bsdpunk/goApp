@@ -6,7 +6,7 @@ import (
 
 	c "github.com/bsdpunk/goApp/controller"
 	m "github.com/bsdpunk/goApp/models"
-	c "github.com/bsdpunk/goApp/page"
+	p "github.com/bsdpunk/goApp/page"
 	"github.com/gin-gonic/gin"
 	"github.com/thinkerou/favicon"
 )
@@ -67,12 +67,30 @@ func main() {
 		)
 
 	})
+
+	router.GET("/create", func(c *gin.Context) {
+
+		// Call the HTML method of the Context to render a template
+		c.HTML(
+			// Set the HTTP status to 200 (OK)
+			http.StatusOK,
+			// Use the index.html template
+			"create.html",
+			// Pass the data that the page uses (in this case, 'title')
+			gin.H{
+				"title":    "Home Page",
+				"bullshit": "Create",
+			},
+		)
+
+	})
+
 	router.GET("/page", func(c *gin.Context) {
 		page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 		limit, _ := strconv.Atoi(c.DefaultQuery("limit", "3"))
 		var detroits m.Detroits
 
-		paginator := page.Paging(&page.Param{
+		paginator := p.Paging(&p.Param{
 			DB:      db,
 			Page:    page,
 			Limit:   limit,

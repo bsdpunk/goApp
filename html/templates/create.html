@@ -1,0 +1,33 @@
+<!--index.html-->
+
+<!--Embed the header.html template at this location-->
+{{ template "header.html" .}}
+
+<h1> {{ .bullshit }}</h1>
+<!--Embed the footer.html template at this location-->
+<h2>New Offense</h2>
+<form action="/loginForm" method="POST">
+    <label>rownum:</label><br>
+    <input type="text" name="rownum"><br>
+
+    <label>caseid:</label><br>
+    <input type="text" name="caseid"><br>
+    
+    <label>crno:</label><br>
+    <input type="text" name="crno"><br>
+    
+    <label>offensedescription:</label><br>
+    <input type="text" name="offensedescription"><br>
+    
+    <label>stateoffenseclass:</label><br>
+    <input type="text" name="stateoffenseclass"><br>
+
+    <label>indidentdate:</label><br>
+    <input type="text" name="incidentdate"><br>
+    
+    <label>hour:</label><br>
+    <input type="text" name="hour"><br>
+
+    <input type="submit">
+</form>
+{{ template "footer.html" .}}
