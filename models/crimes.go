@@ -37,8 +37,7 @@ type Pagination struct {
 	Sort  string `json:"sort"`
 }
 type Detroit struct {
-	ID                    string `json:"id"  gorm:"primaryKey;autoIncrement:true" gorm:"foreignKey:ID"`
-	Rownum                string `json:"rownum"`
+	Rownum                string `json:"ROWNUM"`
 	Caseid                string `json:"CASEID"`
 	Crimeid               string `json:"CRIMEID"`
 	Crno                  string `json:"CRNO"`

@@ -23,8 +23,17 @@ func init() {
 	fmt.Println("vim-go")
 	DB = con()
 }
+func GetDetroit(ids string) crimeModels.Detroit {
+	var detroit crimeModels.Detroit
 
-//CreateUser ... Create Detroit
+	DB.Find(&detroit, ids)
+
+	//result = []*gorm.DB{result}
+	//fmt.Println(reflect.TypeOf([]*gorm.DB{result}))
+	return detroit
+}
+
+//Create ... Create Detroit
 func CreateDetroit(c *gin.Context) {
 	var detroit crimeModels.Detroit
 	c.BindJSON(&detroit)
@@ -44,9 +53,9 @@ func LoadDetroit() {
 	fmt.Println(reflect.TypeOf(DB))
 	//	fmt.Println(*detroit{})
 	DB.AutoMigrate(&detroit)
-	DB.Migrator().CreateConstraint(detroit, "fk_id")
-	DB.Migrator().HasConstraint(detroit, "fk_id")
-	DB.Migrator().CreateIndex(detroit, "id")
+	//DB.Migrator().CreateConstraint(detroit, "fk_id")
+	//DB.Migrator().HasConstraint(detroit, "fk_id")
+	//DB.Migrator().CreateIndex(detroit, "id")
 	DB.CreateInBatches(detroits, 100)
 }
 
