@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"regexp"
 	"strconv"
+	"strings"
 
 	cd "github.com/bsdpunk/goApp/controller"
 	m "github.com/bsdpunk/goApp/models"
@@ -87,7 +89,20 @@ func main() {
 	})
 	router.GET("/show/:id", func(c *gin.Context) {
 
-		fmt.Println(cd.GetDetroit(c.Param("id")))
+		crime := cd.GetDetroit(c.Param("id"))
+		sLoc := strings.Split(crime.Location, " ")
+		last := sLoc[len(sLoc)-1]
+		first := sLoc[len(sLoc)-2]
+		re := regexp.MustCompile(`\)`)
+		reg := regexp.MustCompile(`(?s)(.*)\(`)
+		rege := regexp.MustCompile(`,`)
+		inter := rege.ReplaceAllString(first, "")
+		fmt.Println(reg.ReplaceAllString(last, ""))
+		lat, _ := strconv.ParseFloat(reg.ReplaceAllString(inter, ""), 64)
+		lon, _ := strconv.ParseFloat(re.ReplaceAllString(last, ""), 64)
+		fmt.Println(lat, lon)
+		//fmt.Println(ralph.Location)
+		//fmt.Println(reflect.TypeOf(cd.GetDetroit(c.Param("id"))))
 		// Call the HTML method of the Context to render a template
 		c.HTML(
 			// Set the HTTP status to 200 (OK)
@@ -99,7 +114,10 @@ func main() {
 			gin.H{
 				"title":    "Home Page",
 				"bullshit": "Single Crime",
-				"crime":    cd.GetDetroit(c.Param("id")),
+				"crime":    crime,
+				"location": crime.Location,
+				"lat":      lat,
+				"lon":      lon,
 			},
 		)
 

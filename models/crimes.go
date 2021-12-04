@@ -52,6 +52,8 @@ type Detroit struct {
 	Neighborhood          string `json:"NEIGHBORHOOD"`
 	Censustract           string `json:"CENSUSTRACT"`
 	Location              string `json:"LOCATION"`
+	Lat                   float64
+	Lon                   float64
 }
 
 type Offense struct {

@@ -52,11 +52,15 @@ func LoadDetroit() {
 	fmt.Println(reflect.TypeOf(detroit))
 	fmt.Println(reflect.TypeOf(DB))
 	//	fmt.Println(*detroit{})
-	DB.AutoMigrate(&detroit)
-	//DB.Migrator().CreateConstraint(detroit, "fk_id")
-	//DB.Migrator().HasConstraint(detroit, "fk_id")
-	//DB.Migrator().CreateIndex(detroit, "id")
-	DB.CreateInBatches(detroits, 100)
+	if !(DB.Migrator().HasTable(&crimeModels.Detroit{})) {
+
+		DB.AutoMigrate(&detroit)
+
+		//DB.Migrator().CreateConstraint(detroit, "fk_id")
+		//DB.Migrator().HasConstraint(detroit, "fk_id")
+		//DB.Migrator().CreateIndex(detroit, "id")
+		DB.CreateInBatches(detroits, 100)
+	}
 }
 
 //func LoadOffense() {
